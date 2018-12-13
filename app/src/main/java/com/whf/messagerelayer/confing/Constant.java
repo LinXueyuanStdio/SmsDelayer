@@ -27,7 +27,7 @@ public class Constant {
 
     //服务器配置
     public static final String KEY_OBJECT_SERVER = "server";
-    public static final String APP_DEFAULT_DOMAIN = "http://default.com";
+    public static final String APP_DEFAULT_DOMAIN = "http://192.167.137.1:8000";
     public static final String DOMAIN_NAME = "default_domain";
 
     //邮箱配置

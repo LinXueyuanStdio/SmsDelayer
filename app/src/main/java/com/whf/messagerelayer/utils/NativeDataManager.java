@@ -29,7 +29,7 @@ public class NativeDataManager {
     }
 
     public String getObjectServer() {
-        return mPreference.getString(Constant.KEY_OBJECT_SERVER, "点击设置");
+        return mPreference.getString(Constant.KEY_OBJECT_SERVER, "http://192.168.137.1:8000");
     }
 
     public void setObjectServer(String server) {

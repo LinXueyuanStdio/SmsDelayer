@@ -103,32 +103,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mServerlayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    boolean isReadMessage = checkPermission(Manifest.permission.READ_SMS);
+                    boolean isReadMessage = checkPermission(Manifest.permission.READ_SMS) && checkPermission(Manifest.permission.READ_CONTACTS);
                     if (isReadMessage) {
                         readMessage();
                     } else {
-                        requestPerssion(new String[]{Manifest.permission.READ_SMS}, smsRequestCode);
+                        requestPerssion(new String[]{Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS}, smsRequestCode);
                     }
                 }
             }
         }, 1000);
     }
+
     List<MessageBean> smsInPhone = null;
+
     /**
      * 读取短信
      */
     private void readMessage() {
+        if (!mNativeDataManager.getServerRelay()) {return;}
         //使用Observable.create()创建被观察者
         smsInPhone = MessageUtil.getSmsInPhone(0);
+        if (smsInPhone == null || smsInPhone.size() <= 0) {
+            return;
+        }
+        Toast.makeText(MainActivity.this, "有 " + smsInPhone.size() + " 条短信正在同步......", Toast.LENGTH_LONG).show();
         Observable<MessageBean> observable1 = Observable.create(new ObservableOnSubscribe<MessageBean>() {
             @Override
             public void subscribe(ObservableEmitter<MessageBean> subscriber) throws Exception {
-                if (smsInPhone == null || smsInPhone.size() <= 0) {
-                    return;
-                }
-
                 for (MessageBean sms : smsInPhone) {
                     subscriber.onNext(sms);
                 }
@@ -212,10 +214,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
     /**
      * 检查权限
      *
      * @param permission
+     *
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
