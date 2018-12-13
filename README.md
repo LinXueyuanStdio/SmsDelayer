@@ -15,3 +15,7 @@ Android 手机短信转发器，转发至另一手机短信、邮箱、服务器
 ```python
 python server.py
 ```
+
+## 致谢
+
+https://github.com/HaoFeiWang/MessageRelayer
